@@ -3,7 +3,14 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27703.2000
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IrcWidget.Web", "IrcWidget.Web\IrcWidget.Web.csproj", "{84A547CF-D37E-46A3-9671-5B7329C80DB6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IrcWidget.Web", "IrcWidget.Web\IrcWidget.Web.csproj", "{84A547CF-D37E-46A3-9671-5B7329C80DB6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{3F24CB80-D576-4669-BB5C-BADB876D9027}"
+	ProjectSection(SolutionItems) = preProject
+		Performance1.psess = Performance1.psess
+		Performance2.psess = Performance2.psess
+		Performance3.psess = Performance3.psess
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

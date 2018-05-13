@@ -22,7 +22,7 @@ namespace IrcWidget.Web.Controllers
 
             // Error checking.
             if (String.IsNullOrEmpty(LogFile))
-                Logger.LogError("No username has been supplied - ensure the environmental variables have been set if necessary (inspect the dockerfile).");
+                Logger.LogError("No logfile has been supplied - ensure the environmental variables have been set if necessary (inspect the dockerfile).");
 
         }
 
