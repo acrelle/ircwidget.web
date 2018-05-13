@@ -33,7 +33,7 @@ namespace IrcWidget.Web.Controllers
         {
             try
             {
-                List<string> text = System.IO.File.ReadLines(LogFile).Reverse().Take(30).ToList();
+                List<string> text = System.IO.File.ReadAllLines(LogFile).Reverse().Take(30).ToList();
                 return text;
             }
             catch (Exception e)
