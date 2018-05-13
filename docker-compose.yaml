@@ -1,0 +1,11 @@
+version: "2"
+services:
+  ircwidget-web:
+    build: .
+    image: acrelle/ircwidget-web
+    container_name: ircwidget-web
+    restart: unless-stopped
+    ports:
+      - 8080:80
+    volume:
+      - ~/logfile:/log/logfile
