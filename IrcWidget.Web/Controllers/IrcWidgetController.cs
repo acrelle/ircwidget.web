@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -14,6 +15,9 @@ namespace IrcWidget.Web.Controllers
         private IConfiguration Configuration { get; }
         private ILogger Logger { get; }
         private string LogFile => Configuration["logfile"];
+        private int BufferLength => ((Int32.TryParse(Configuration["bufferlength"], out int result)) ? result : 10000);
+        private int LineCount => ((Int32.TryParse(Configuration["linecount"], out int result)) ? result : 30);
+
 
         public IrcWidgetController(IConfiguration configuration, ILogger<IrcWidgetController> logger)
         {
@@ -26,15 +30,23 @@ namespace IrcWidget.Web.Controllers
 
         }
 
-        //private String LogFile => Config
         // GET api/values
         [HttpGet]
         public IEnumerable<string> Get()
         {
             try
             {
-                List<string> text = System.IO.File.ReadAllLines(LogFile).Reverse().Take(30).ToList();
-                return text;
+                using (FileStream fs = new FileStream(LogFile, FileMode.Open, FileAccess.Read))
+                {
+                    // Rather than Read all lines, seek to near the end of the file and 
+                    // just parse the last 10k.
+
+                    fs.Seek(Math.Max(-BufferLength, -fs.Length), SeekOrigin.End);
+                    var s = new StreamReader(fs);
+                    
+                    return s.ReadToEnd().Split('\n').Reverse().Take(LineCount).Reverse();
+                }
+               
             }
             catch (Exception e)
             {
