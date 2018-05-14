@@ -11,6 +11,8 @@ namespace IrcWidget.Web.Controllers
 {
     /// <summary>
     ///  Provides the last 30 lines of the configured file through a API interface.
+    ///  
+    ///     At a minimum, use Secrets Manager to configure the LogFile variable.
     /// </summary>
     [Route("api/[controller]")]
     public class IrcWidgetController : Controller
