@@ -1,9 +1,8 @@
 services:
-- docker
+  - docker
 language: bash
 
 script:
-
   # Build all images
   - docker build --build-arg PLATFORM=linux-amd64 -t acrelle/ircwidget-web:linux-amd64 -f Dockerfile .
   - docker build --build-arg PLATFORM=linux-arm -t acrelle/ircwidget-web:linux-arm -f Dockerfile.linux-arm32v7 .
