@@ -14,28 +14,31 @@ namespace IrcWidget.Web.Controllers
     ///  
     ///     At a minimum, use Secrets Manager to configure the LogFile variable.
     /// </summary>
+    [ApiController]
     [Route("api/[controller]")]
     public class IrcWidgetController : Controller
     {
-        private IConfiguration Configuration { get; }
-        private ILogger Logger { get; }
+        private IConfiguration _configuration { get; }
+        private ILogger<IrcWidgetController> _logger { get; }
 
         // Reduce the lines of code and re-evaluate on each call.
-        private string LogFile => Configuration["logfile"];
-        private int BufferLength => ((Int32.TryParse(Configuration["bufferlength"], out int result)) ? result : 10000);
-        private int LineCount => ((Int32.TryParse(Configuration["linecount"], out int result)) ? result : 30);
+        private string LogFile => _configuration["logfile"];
+        private int BufferLength => ((Int32.TryParse(_configuration["bufferlength"], out int result)) ? result : 10000);
+        private int LineCount => ((Int32.TryParse(_configuration["linecount"], out int result)) ? result : 30);
 
 
         public IrcWidgetController(IConfiguration configuration, ILogger<IrcWidgetController> logger)
         {
-            Configuration = configuration;
-            Logger = logger;
+            _configuration = configuration;
+            _logger = logger;
 
             // This is most likely a fatal error.
             if (String.IsNullOrEmpty(LogFile))
-                Logger.LogError("No logfile has been supplied - ensure the environmental variables have been set if necessary (inspect the dockerfile).");
+            {
+                _logger.LogError("No logfile has been supplied - ensure the environmental variables have been set if necessary (inspect the dockerfile).");
+            }
 
-            Logger.LogDebug("Started with configuration of LogFile: {LogFile}, BufferLength: {BufferLength}, LineCount: {LineCount}", LogFile, BufferLength, LineCount);
+            _logger.LogDebug("Started with configuration of LogFile: {LogFile}, BufferLength: {BufferLength}, LineCount: {LineCount}", LogFile, BufferLength, LineCount);
         }
 
         // GET api/ircwidget
@@ -55,42 +58,17 @@ namespace IrcWidget.Web.Controllers
 
                     fs.Seek(Math.Max(-BufferLength, -fs.Length), SeekOrigin.End);
                     var s = new StreamReader(fs);
-                    
+
                     return s.ReadToEnd().Split('\n').Reverse().Take(LineCount).Reverse();
                 }
-               
+
             }
             catch (Exception e)
             {
                 // Fatal error, give up.
-                Logger.LogError(e, "Failure while reading file: {file}", LogFile);
+                _logger.LogError(e, "Failure while reading file: {file}", LogFile);
                 throw e;
-            }           
-        }
-
-        // GET api/ircwidget/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "not supported";
-        }
-
-        // POST api/ircwidget
-        [HttpPost]
-        public void Post([FromBody]string value)
-        {
-        }
-
-        // PUT api/ircwidget/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
-        {
-        }
-
-        // DELETE api/ircwidget/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
+            }
         }
     }
 }
