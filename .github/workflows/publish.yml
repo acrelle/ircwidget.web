@@ -26,8 +26,8 @@ jobs:
         # uses: docker/login-action@adb73476b6e06caddec5db0bc1deacbec8cdd947
         uses: docker/login-action@v1.6.0
         with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUb_PASSWORD }}
 
       - name: Clean install dependencies and build
         run: |
