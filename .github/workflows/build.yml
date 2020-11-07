@@ -9,7 +9,7 @@ on:
     branches: ["*"]
 
 jobs:
-  grpc-client:
+  build:
     runs-on: ubuntu-latest
 
     steps:
@@ -21,12 +21,12 @@ jobs:
 
       - name: Install dependencies
         run: dotnet restore
-        working-directory: ./ircwidget.web
+        working-directory: ./IrcWidget.Web
 
       - name: Build
         run: dotnet build --configuration Release --no-restore
-        working-directory: ./ircwidget.web
+        working-directory: ./IrcWidget.Web
 
       - name: Test
         run: dotnet test --no-restore --verbosity normal
-        working-directory: ./ircwidget.web
+        working-directory: ./IrcWidget.Web

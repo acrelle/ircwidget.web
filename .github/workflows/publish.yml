@@ -12,7 +12,7 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
-  build:
+  publish:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
@@ -28,3 +28,11 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Clean install dependencies and build
+        run: |
+          docker build --build-arg PLATFORM=linux-amd64 -t acrelle/ircwidget-web:linux-amd64 -f Dockerfile .
+          docker build --build-arg PLATFORM=linux-arm -t acrelle/ircwidget-web:linux-arm -f Dockerfile.linux-arm32v7 .
+
+          docker push acrelle/ircwidget-web:linux-amd64
+          docker push acrelle/ircwidget-web:linux-arm
