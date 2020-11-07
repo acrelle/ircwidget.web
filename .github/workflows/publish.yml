@@ -1,4 +1,4 @@
-name: ircwidget.web docker publish
+name: Docker Image Publish
 
 on:
   workflow_dispatch:
