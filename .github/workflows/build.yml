@@ -1,0 +1,32 @@
+# This is a basic workflow to help you get started with Actions
+
+name: ircwidget.web build
+
+# Controls when the action will run. Triggers the workflow on push or pull request
+# events but only for the master branch
+on:
+  push:
+    branches: ["*"]
+
+jobs:
+  grpc-client:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 3.1.301
+
+      - name: Install dependencies
+        run: dotnet restore
+        working-directory: ./ircwidget.web
+
+      - name: Build
+        run: dotnet build --configuration Release --no-restore
+        working-directory: ./ircwidget.web
+
+      - name: Test
+        run: dotnet test --no-restore --verbosity normal
+        working-directory: ./ircwidget.web
