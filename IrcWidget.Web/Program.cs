@@ -3,6 +3,7 @@
 builder.Services.AddControllers();
 builder.Services.AddSingleton<IFileTailService, FileTailService>();
 builder.Services.Configure<LogOptions>(builder.Configuration.GetSection(nameof(LogOptions)));
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -10,12 +11,7 @@ if (app.Environment.IsDevelopment())
     app.UseDeveloperExceptionPage();
 }
 
-var logService = app.Services.GetRequiredService<IFileTailService>();
+var fileTailService = app.Services.GetRequiredService<IFileTailService>();
 
-app.UseRouting();
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapGet("api/IrcWidget", logService.Get);
-});
-
+app.MapGet("api/IrcWidget", fileTailService.Get);
 app.Run();
