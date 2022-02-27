@@ -29,15 +29,5 @@ jobs:
 
       - name: Clean install dependencies and build
         run: |
-          docker build --build-arg PLATFORM=linux-amd64 -t acrelle/ircwidget-web:linux-amd64 -f Dockerfile .
-          docker build --build-arg PLATFORM=linux-arm -t acrelle/ircwidget-web:linux-arm -f Dockerfile.linux-arm32v7 .
-
-          docker push acrelle/ircwidget-web:linux-amd64
-          docker push acrelle/ircwidget-web:linux-arm
-
-          wget https://github.com/estesp/manifest-tool/releases/download/v1.0.3/manifest-tool-linux-amd64
-          mv manifest-tool-linux-amd64 manifest-tool
-          chmod +x manifest-tool
-          # Push manifest-list
-          ./manifest-tool push from-args --platforms linux/amd64,linux/arm --template "acrelle/ircwidget-web:OS-ARCH" --target "acrelle/ircwidget-web:$GITHUB_RUN_ID"
-          ./manifest-tool push from-args --platforms linux/amd64,linux/arm --template "acrelle/ircwidget-web:OS-ARCH" --target "acrelle/ircwidget-web:latest"
+          docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t acrelle/ircwidget-web:latest --push .
+          docker push acrelle/ircwidget-web:latest
