@@ -3,7 +3,7 @@ WORKDIR /app
 
 # Copy csproj and restore as distinct layers
 COPY IrcWidget.Web/*.csproj ./
-RUN dotnet restore
+RUN dotnet restore -r linux-x64
 
 # Copy everything else and build
 COPY IrcWidget.Web/ ./
