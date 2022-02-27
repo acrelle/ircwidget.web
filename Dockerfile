@@ -1,6 +1,7 @@
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build-env
 WORKDIR /app
 
+RUN dotnet --info
 # Copy csproj and restore as distinct layers
 COPY IrcWidget.Web/*.csproj ./
 RUN dotnet restore
