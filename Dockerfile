@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build-env
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build-env
 WORKDIR /app
 
 # Copy csproj and restore as distinct layers
@@ -7,11 +7,11 @@ RUN dotnet restore
 
 # Copy everything else and build
 COPY IrcWidget.Web/ ./
-RUN dotnet publish -c Release -o out && \
+RUN dotnet publish --no-restore -c Release -o out && \
     mkdir /logs
 
 # Build runtime image
-FROM mcr.microsoft.com/dotnet/aspnet:5.0-alpine
+FROM mcr.microsoft.com/dotnet/aspnet:6.0-alpine
 LABEL maintainer=anthony@relle.co.uk
 
 WORKDIR /app

@@ -1,26 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+﻿var builder = WebApplication.CreateBuilder(args);
 
-namespace IrcWidget.Web
+builder.Services.AddControllers();
+builder.Services.AddSingleton<IFileTailService, FileTailService>();
+builder.Services.Configure<LogOptions>(builder.Configuration.GetSection(nameof(LogOptions)));
+var app = builder.Build();
+
+if (app.Environment.IsDevelopment())
 {
-    public class Program
-    {
-        public static void Main(string[] args)
-        {
-            CreateHostBuilder(args).Build().Run();
-        }
-
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseStartup<Startup>();
-                });
-    }
+    app.UseDeveloperExceptionPage();
 }
+
+var logService = app.Services.GetRequiredService<IFileTailService>();
+
+app.UseRouting();
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapGet("api/IrcWidget", logService.Get);
+});
+
+app.Run();
