@@ -3,15 +3,15 @@ WORKDIR /app
 
 # Copy csproj and restore as distinct layers
 COPY IrcWidget.Web/*.csproj ./
-RUN dotnet restore
+RUN dotnet restore -r linux-arm
 
 # Copy everything else and build
 COPY IrcWidget.Web/ ./
-RUN dotnet publish --no-restore -c Release -o out && \
+RUN dotnet publish -r linux-arm --no-self-contained --no-restore -c Release -o out && \
     mkdir /logs
 
 # Build runtime image
-FROM mcr.microsoft.com/dotnet/aspnet:6.0-bullseye-slim-arm32v7
+FROM mcr.microsoft.com/dotnet/aspnet:6.0-alpine3.14-arm32v7
 LABEL maintainer=anthony@relle.co.uk
 
 WORKDIR /app

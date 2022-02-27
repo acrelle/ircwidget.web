@@ -29,8 +29,8 @@ jobs:
 
       - name: Clean install dependencies and build
         run: |
-          docker build --build-arg PLATFORM=linux-amd64 -t acrelle/ircwidget-web:linux-amd64 -f Dockerfile .
-          docker build --build-arg PLATFORM=linux-arm -t acrelle/ircwidget-web:linux-arm -f Dockerfile.linux-arm32v7 .
+          docker build -t acrelle/ircwidget-web:linux-amd64 -f Dockerfile .
+          docker build -t acrelle/ircwidget-web:linux-arm -f Dockerfile.linux-arm32v7 .
 
           docker push acrelle/ircwidget-web:linux-amd64
           docker push acrelle/ircwidget-web:linux-arm

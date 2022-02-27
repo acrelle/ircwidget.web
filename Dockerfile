@@ -3,11 +3,11 @@ WORKDIR /app
 
 # Copy csproj and restore as distinct layers
 COPY IrcWidget.Web/*.csproj ./
-RUN dotnet restore
+RUN dotnet restore -r linux-x64
 
 # Copy everything else and build
 COPY IrcWidget.Web/ ./
-RUN dotnet publish --no-restore -c Release -o out && \
+RUN dotnet publish -r linux-x64 --no-self-contained --no-restore -c Release -o out && \
     mkdir /logs
 
 # Build runtime image
